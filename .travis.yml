@@ -74,7 +74,7 @@ deploy:
   provider: releases
   api_key:
     secure: "PL2dzlX6Sed66K7iWmwIwdaI91qZn/IBTqHPk4/6mXQXFyl4foVrCJflVZ7Gyet+R6R2BHkmjGUR8OQsnTbF9uxRmIwbucCAJ7U6GYR0HE13B0YppV8Qs7cxDzGYQkJwYFa3zWseDrQ/gmo8eH/BsFU72OuBaAmIodKD8EDu9vx/3lfrZ03qZi5zNV2kMSaOYVndYoUwrt9+aL6Bm9r18tQVjrdBH1LFhDa4tA71f8Zpx2rnA8fF1C32bCl3OklRA4madTvxt++oI7Byvn8LeSactQ/ybD2alxnGi8k/Cbb6tRx/fyBb8XpalJuVcRbgP62aPRuQ/eKM2WauwaMD/Fz0nVsSqU8NzkvGrx9P1B7knw2ZSv/hOQTYUn9JQ++UNjjIkt6dn9Dq5b1xMwRwqnEG7l2vA/q3jEIf6DF5MKQwleUZhivOdmKkHaAk8QtqlrMzv5iStFDP6CRPe53k/XqhaG+FIGtQprjPEhbb6JN0crVwITlYxcujYZl/1H92sS/5sNgERTjj9mjvOVeTfkW5fSSoMZoH3kwbmJKCDYzs9GOJoromSCvchgkREhNNDlrMBO6PXcj5o+tNqRliUb5obxydc0dzgZyoIdkJFjHdRJ6XYZg1HzoLJecgA1pR2JhmWsTaypDs0owm/60OPyM8/upaKrks6q1WJVwO7VY="
-   file:
+  file:
     - ${OUTDIR}/..//crown-$TRAVIS_JOB_NUMBER-$HOST.tar.gz
   on:
     repo: Extrememist/crowncoin
