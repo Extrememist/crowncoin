@@ -216,7 +216,7 @@ void CThrone::Check(bool forceCheck)
     activeState = THRONE_ENABLED; // OK
 }
 
- bool CThroneBroadcast::IsValidNetAddr()
+ bool CThrone::IsValidNetAddr()
   {
       // TODO: regtest is fine with any addresses for now,
       // should probably be a bit smarter if one day we start to implement tests for this
