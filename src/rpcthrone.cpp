@@ -695,7 +695,7 @@ Value thronebroadcast(const Array& params, bool fHelp)
                 std::string errorMessage;
                 CThroneBroadcast mnb;
 
-                bool result = CMasternodeBroadcast::Createmne.getIp(), mne.getPrivKey(), mne.getTxHash(), mne.getOutputIndex(), errorMessage, mnb, true);
+                bool result = CThroneBroadcast::Createmne.getIp(), mne.getPrivKey(), mne.getTxHash(), mne.getOutputIndex(), errorMessage, mnb, true);
 
                 statusObj.push_back(Pair("result", result ? "successful" : "failed"));
                 if(result) {
@@ -756,7 +756,7 @@ Value thronebroadcast(const Array& params, bool fHelp)
             CTxIn vin = CTxIn(uint256S(mne.getTxHash()), uint32_t(atoi(mne.getOutputIndex().c_str())));
             CThroneBroadcast mnb;
 
-            bool result = CMasternodeBroadcast::Createmne.getIp(), mne.getPrivKey(), mne.getTxHash(), mne.getOutputIndex(), errorMessage, mnb, true);
+            bool result = CThroneBroadcast::Createmne.getIp(), mne.getPrivKey(), mne.getTxHash(), mne.getOutputIndex(), errorMessage, mnb, true);
 
             Object statusObj;
             statusObj.push_back(Pair("alias", mne.getAlias()));
