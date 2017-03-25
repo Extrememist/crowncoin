@@ -308,7 +308,7 @@ Value throne(const Array& params, bool fHelp)
                 std::string errorMessage;
                 CThroneBroadcast mnb;
 
-                bool result = activeThrone.CreateBroadcast(mne.getIp(), mne.getPrivKey(), mne.getTxHash(), mne.getOutputIndex(), errorMessage, mnb);
+                bool result = CMasternodeBroadcast::Createmne.getIp(), mne.getPrivKey(), mne.getTxHash(), mne.getOutputIndex(), errorMessage, mnb);
 
                 statusObj.push_back(Pair("result", result ? "successful" : "failed"));
                 if(result) {
@@ -372,7 +372,7 @@ Value throne(const Array& params, bool fHelp)
             if(strCommand == "start-missing" && pmn) continue;
             if(strCommand == "start-disabled" && pmn && pmn->IsEnabled()) continue;
 
-            bool result = activeThrone.CreateBroadcast(mne.getIp(), mne.getPrivKey(), mne.getTxHash(), mne.getOutputIndex(), errorMessage, mnb);
+            bool result = CMasternodeBroadcast::Createmne.getIp(), mne.getPrivKey(), mne.getTxHash(), mne.getOutputIndex(), errorMessage, mnb);
 
             Object statusObj;
             statusObj.push_back(Pair("alias", mne.getAlias()));
@@ -695,7 +695,7 @@ Value thronebroadcast(const Array& params, bool fHelp)
                 std::string errorMessage;
                 CThroneBroadcast mnb;
 
-                bool result = activeThrone.CreateBroadcast(mne.getIp(), mne.getPrivKey(), mne.getTxHash(), mne.getOutputIndex(), errorMessage, mnb, true);
+                bool result = CMasternodeBroadcast::Createmne.getIp(), mne.getPrivKey(), mne.getTxHash(), mne.getOutputIndex(), errorMessage, mnb, true);
 
                 statusObj.push_back(Pair("result", result ? "successful" : "failed"));
                 if(result) {
@@ -756,7 +756,7 @@ Value thronebroadcast(const Array& params, bool fHelp)
             CTxIn vin = CTxIn(uint256S(mne.getTxHash()), uint32_t(atoi(mne.getOutputIndex().c_str())));
             CThroneBroadcast mnb;
 
-            bool result = activeThrone.CreateBroadcast(mne.getIp(), mne.getPrivKey(), mne.getTxHash(), mne.getOutputIndex(), errorMessage, mnb, true);
+            bool result = CMasternodeBroadcast::Createmne.getIp(), mne.getPrivKey(), mne.getTxHash(), mne.getOutputIndex(), errorMessage, mnb, true);
 
             Object statusObj;
             statusObj.push_back(Pair("alias", mne.getAlias()));

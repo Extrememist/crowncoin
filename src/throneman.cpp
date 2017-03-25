@@ -749,7 +749,7 @@ void CThroneMan::ProcessMessage(CNode* pfrom, std::string& strCommand, CDataStre
         int nInvCount = 0;
 
         BOOST_FOREACH(CThrone& mn, vThrones) {
-            if (mn.addr.IsRFC1918() || mn.addr.IsLocal()) continue; // do not send local network throne
+            if(mn.addr.IsRFC1918()) continue; //local network
 
             if(mn.IsEnabled()) {
                 LogPrint("throne", "dseg - Sending Throne entry - %s \n", mn.addr.ToString());
@@ -833,6 +833,14 @@ bool CThroneMan::CheckMnbAndUpdateThroneList(CThroneBroadcast mnb, int& nDos) {
     mapSeenThroneBroadcast.insert(make_pair(mnb.GetHash(), mnb));
 
     LogPrint("throne", "CThroneMan::CheckMnbAndUpdateThroneList - Throne broadcast, vin: %s new\n", mnb.vin.ToString());
+
+     // We check addr before both initial mnb and update
+     if(!mnb.IsValidNetAddr()) {
+        LogPrintf("CThroneBroadcast::CheckMnbAndUpdateThroneList -- Invalid addr, rejected: throne=%s  sigTime=%lld  addr=%s\n",
+             mnb.vin.prevout.ToStringShort(), mnb.sigTime, mnb.addr.ToString());
+       return false;
+     }
+
 
     if(!mnb.CheckAndUpdate(nDos)){
         LogPrint("throne", "CThroneMan::CheckMnbAndUpdateThroneList - Throne broadcast, vin: %s CheckAndUpdate failed\n", mnb.vin.ToString());

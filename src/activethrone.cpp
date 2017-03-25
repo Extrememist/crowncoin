@@ -112,7 +112,7 @@ void CActiveThrone::ManageStatus()
             }
 
             CThroneBroadcast mnb;
-            if(!CreateBroadcast(vin, service, keyCollateralAddress, pubKeyCollateralAddress, keyThrone, pubKeyThrone, errorMessage, mnb)) {
+            if(!CThroneBroadcast::Create(vin, service, keyCollateralAddress, pubKeyCollateralAddress, keyThrone, pubKeyThrone, errorMessage, mnb)) {
                 notCapableReason = "Error on CreateBroadcast: " + errorMessage;
                 LogPrintf("Register::ManageStatus() - %s\n", notCapableReason);
                 return;
@@ -208,75 +208,7 @@ bool CActiveThrone::SendThronePing(std::string& errorMessage) {
         return false;
     }
 
-}
 
-bool CActiveThrone::CreateBroadcast(std::string strService, std::string strKeyThrone, std::string strTxHash, std::string strOutputIndex, std::string& errorMessage, CThroneBroadcast &mnb, bool fOffline) {
-    CTxIn vin;
-    CPubKey pubKeyCollateralAddress;
-    CKey keyCollateralAddress;
-    CPubKey pubKeyThrone;
-    CKey keyThrone;
-
-    //need correct blocks to send ping
-    if(!fOffline && !throneSync.IsBlockchainSynced()) {
-        errorMessage = "Sync in progress. Must wait until sync is complete to start Throne";
-        LogPrintf("CActiveThrone::CreateBroadcast() - %s\n", errorMessage);
-        return false;
-    }
-
-    if(!darkSendSigner.SetKey(strKeyThrone, errorMessage, keyThrone, pubKeyThrone))
-    {
-        errorMessage = strprintf("Can't find keys for throne %s - %s", strService, errorMessage);
-        LogPrintf("CActiveThrone::CreateBroadcast() - %s\n", errorMessage);
-        return false;
-    }
-
-    if(!GetThroNeVin(vin, pubKeyCollateralAddress, keyCollateralAddress, strTxHash, strOutputIndex)) {
-        errorMessage = strprintf("Could not allocate vin %s:%s for throne %s", strTxHash, strOutputIndex, strService);
-        LogPrintf("CActiveThrone::CreateBroadcast() - %s\n", errorMessage);
-        return false;
-    }
-
-    CService service = CService(strService);
-    if(Params().NetworkID() == CBaseChainParams::MAIN) {
-        if(service.GetPort() != 9340) {
-            errorMessage = strprintf("Invalid port %u for throne %s - only 9340 is supported on mainnet.", service.GetPort(), strService);
-            LogPrintf("CActiveThrone::CreateBroadcast() - %s\n", errorMessage);
-            return false;
-        }
-    } else if(service.GetPort() == 9340) {
-        errorMessage = strprintf("Invalid port %u for throne %s - 9340 is only supported on mainnet.", service.GetPort(), strService);
-        LogPrintf("CActiveThrone::CreateBroadcast() - %s\n", errorMessage);
-        return false;
-    }
-
-    addrman.Add(CAddress(service), CNetAddr("127.0.0.1"), 2*60*60);
-
-    return CreateBroadcast(vin, CService(strService), keyCollateralAddress, pubKeyCollateralAddress, keyThrone, pubKeyThrone, errorMessage, mnb);
-}
-
-bool CActiveThrone::CreateBroadcast(CTxIn vin, CService service, CKey keyCollateralAddress, CPubKey pubKeyCollateralAddress, CKey keyThrone, CPubKey pubKeyThrone, std::string &errorMessage, CThroneBroadcast &mnb) {
-    // wait for reindex and/or import to finish
-    if (fImporting || fReindex) return false;
-
-    CThronePing mnp(vin);
-    if(!mnp.Sign(keyThrone, pubKeyThrone)){
-        errorMessage = strprintf("Failed to sign ping, vin: %s", vin.ToString());
-        LogPrintf("CActiveThrone::CreateBroadcast() -  %s\n", errorMessage);
-        mnb = CThroneBroadcast();
-        return false;
-    }
-
-    mnb = CThroneBroadcast(service, vin, pubKeyCollateralAddress, pubKeyThrone, PROTOCOL_VERSION);
-    mnb.lastPing = mnp;
-    if(!mnb.Sign(keyCollateralAddress)){
-        errorMessage = strprintf("Failed to sign broadcast, vin: %s", vin.ToString());
-        LogPrintf("CActiveThrone::CreateBroadcast() - %s\n", errorMessage);
-        mnb = CThroneBroadcast();
-        return false;
-    }
-
-    return true;
 }
 
 bool CActiveThrone::GetThroNeVin(CTxIn& vin, CPubKey& pubkey, CKey& secretKey) {

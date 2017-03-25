@@ -216,6 +216,14 @@ void CThrone::Check(bool forceCheck)
     activeState = THRONE_ENABLED; // OK
 }
 
+ bool CThrone::IsValidNetAddr()
+  {
+      // TODO: regtest is fine with any addresses for now,
+      // should probably be a bit smarter if one day we start to implement tests for this
+      return Params().NetworkIDString() == CBaseChainParams::REGTEST ||
+              (addr.IsIPv4() && IsReachable(addr) && addr.IsRoutable());
+  }
+
 int64_t CThrone::SecondsSincePayment() {
     CScript pubkeyScript;
     pubkeyScript = GetScriptForDestination(pubkey.GetID());
@@ -336,6 +344,83 @@ CThroneBroadcast::CThroneBroadcast(const CThrone& mn)
     nScanningErrorCount = mn.nScanningErrorCount;
     nLastScanningErrorBlockHeight = mn.nLastScanningErrorBlockHeight;
 }
+
+ bool CThroneBroadcast::Create(std::string strService, std::string strKeyThrone, std::string strTxHash, std::string strOutputIndex, std::string& strErrorMessage, CThroneBroadcast &mnb, bool fOffline)
+  {
+      CTxIn txin;
+      CPubKey pubKeyCollateral;
+      CKey keyCollateral;
+      CPubKey pubKeyThroneNew;
+      CKey keyThroneNew;
+
+      //need correct blocks to send ping
+      if(!fOffline && !throneSync.IsBlockchainSynced()) {
+          strErrorMessage = "Sync in progress. Must wait until sync is complete to start Throne";
+          LogPrintf("CThroneBroadcast::Create -- %s\n", strErrorMessage);
+          return false;
+      }
+
+      if(!darkSendSigner.SetKey(strKeyThrone, strErrorMessage, keyThroneNew, pubKeyThroneNew)) {
+          strErrorMessage = strprintf("Can't find keys for throne %s, error: %s", strService, strErrorMessage);
+          LogPrintf("CThroneBroadcast::Create -- %s\n", strErrorMessage);
+          return false;
+      }
+
+      if(!pwalletMain->GetThroneVinAndKeys(txin, pubKeyCollateral, keyCollateral, strTxHash, strOutputIndex)) {
+          strErrorMessage = strprintf("Could not allocate txin %s:%s for throne %s", strTxHash, strOutputIndex, strService);
+          LogPrintf("CThroneBroadcast::Create -- %s\n", strErrorMessage);
+          return false;
+      }
+
+      CService service = CService(strService);
+      uint16_t mainnetDefaultPort = Params(CBaseChainParams::MAIN).GetDefaultPort();
+      if(Params().NetworkIDString() == CBaseChainParams::MAIN) {
+          if(service.GetPort() != mainnetDefaultPort) {
+              strErrorMessage = strprintf("Invalid port %u for throne %s, only %u is supported on mainnet.", service.GetPort(), strService, mainnetDefaultPort);
+              LogPrintf("CThroneBroadcast::Create -- %s\n", strErrorMessage);
+              return false;
+          }
+      } else if(service.GetPort() == mainnetDefaultPort) {
+          strErrorMessage = strprintf("Invalid port %u for throne %s, %u is the only supported on mainnet.", service.GetPort(), strService, mainnetDefaultPort);
+          LogPrintf("CThroneBroadcast::Create -- %s\n", strErrorMessage);
+          return false;
+      }
+
+      return Create(txin, CService(strService), keyCollateral, pubKeyCollateral, keyThroneNew, pubKeyThroneNew, strErrorMessage, mnb);
+  }
+
+  bool CThroneBroadcast::Create(CTxIn txin, CService service, CKey keyCollateral, CPubKey pubKeyCollateral, CKey keyThroneNew, CPubKey pubKeyThroneNew, std::string &strErrorMessage, CThroneBroadcast &mnb)
+  {
+      // wait for reindex and/or import to finish
+      if (fImporting || fReindex) return false;
+
+      CThronePing mnp(txin);
+      if(!mnp.Sign(keyThroneNew, pubKeyThroneNew)) {
+          strErrorMessage = strprintf("Failed to sign ping: %s", txin.ToString());
+          LogPrintf("CThroneBroadcast::Create --  %s\n", strErrorMessage);
+          mnb = CThroneBroadcast();
+          return false;
+      }
+
+      mnb = CThroneBroadcast(service, txin, pubKeyCollateral, pubKeyThroneNew, PROTOCOL_VERSION);
+      if(!mnb.IsValidNetAddr()) {
+          strErrorRet = strprintf("Invalid IP address, throne=%s", txin.prevout.ToStringShort());
+          LogPrintf("CThroneBroadcast::Create -- %s\n", strErrorRet);
+          mnb = CThroneBroadcast();
+          return false;
+      }
+
+      mnb.lastPing = mnp;
+      if(!mnb.Sign(keyCollateral)) {
+          strErrorMessage = strprintf("Failed to sign broadcast: %s", txin.ToString());
+          LogPrintf("CThroneBroadcast::Create -- %s\n", strErrorMessage);
+          mnb = CThroneBroadcast();
+          return false;
+      }
+
+      return true;
+  }
+
 
 bool CThroneBroadcast::CheckAndUpdate(int& nDos)
 {
