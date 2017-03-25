@@ -749,7 +749,7 @@ void CThroneMan::ProcessMessage(CNode* pfrom, std::string& strCommand, CDataStre
         int nInvCount = 0;
 
         BOOST_FOREACH(CThrone& mn, vThrones) {
-            if(mn.addr.IsRFC1918()) continue; //local network
+            if (mn.addr.IsRFC1918() || mn.addr.IsLocal()) continue; // do not send local network throne
 
             if(mn.IsEnabled()) {
                 LogPrint("throne", "dseg - Sending Throne entry - %s \n", mn.addr.ToString());
