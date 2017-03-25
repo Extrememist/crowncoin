@@ -244,7 +244,7 @@ public:
         return activeState == THRONE_ENABLED;
     }
 
-    bool isVaildNetAddr();
+    bool isValidNetAddr();
 
     int GetThroneInputAge()
     {
