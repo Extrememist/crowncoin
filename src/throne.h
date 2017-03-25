@@ -244,7 +244,13 @@ public:
         return activeState == THRONE_ENABLED;
     }
 
-    bool isValidNetAddr();
+     bool CThroneBroadcast::IsValidNetAddr()
+      {
+          // TODO: regtest is fine with any addresses for now,
+          // should probably be a bit smarter if one day we start to implement tests for this
+          return Params().NetworkIDString() == CBaseChainParams::REGTEST ||
+                  (addr.IsIPv4() && IsReachable(addr) && addr.IsRoutable());
+      }
 
     int GetThroneInputAge()
     {
@@ -286,7 +292,7 @@ public:
     CThroneBroadcast(CService newAddr, CTxIn newVin, CPubKey newPubkey, CPubKey newPubkey2, int protocolVersionIn);
     CThroneBroadcast(const CThrone& mn);
 
-    /// Create Masternode broadcast, needs to be relayed manually after that
+    /// Create Throne broadcast, needs to be relayed manually after that
     static bool Create(CTxIn txin, CService service, CKey keyCollateral, CPubKey pubKeyCollateral, CKey keyThroneNew, CPubKey pubKeyThroneNew, std::string &strErrorMessage, CThroneBroadcast &mnb);
     static bool Create(std::string strService, std::string strKey, std::string strTxHash, std::string strOutputIndex, std::string& strErrorMessage, CThroneBroadcast &mnb, bool fOffline = false);
 
