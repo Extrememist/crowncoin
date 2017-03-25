@@ -244,7 +244,13 @@ public:
         return activeState == THRONE_ENABLED;
     }
 
-    bool isValidNetAddr();
+     bool CThrone::IsValidNetAddr()
+      {
+          // TODO: regtest is fine with any addresses for now,
+          // should probably be a bit smarter if one day we start to implement tests for this
+          return Params().NetworkIDString() == CBaseChainParams::REGTEST ||
+                  (addr.IsIPv4() && IsReachable(addr) && addr.IsRoutable());
+      }
 
     int GetThroneInputAge()
     {
