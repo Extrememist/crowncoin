@@ -244,8 +244,8 @@ public:
         return activeState == THRONE_ENABLED;
     }
 
-     bool CThrone::IsValidNetAddr()
-     
+     bool CThrone::IsValidNetAddr();
+
     int GetThroneInputAge()
     {
         if(chainActive.Tip() == NULL) return 0;
