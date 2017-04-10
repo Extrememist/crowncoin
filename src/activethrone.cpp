@@ -65,6 +65,12 @@ void CActiveThrone::ManageStatus()
         }
 
         if(Params().NetworkID() == CBaseChainParams::MAIN) {
+            if(!(service.IsIPv4() && service.IsRoutable())) {
+                notCapableReason = "Invalid IP address (IPV4 ONLY)" + service.ToString();
+                status = THRONE_NOT_CAPABLE;
+                LogPrintf("CActiveThrone::ManageStatus() - not capable: %s\n", notCapableReason.c_str());
+                return;
+            }
             if(service.GetPort() != 9340) {
                 notCapableReason = strprintf("Invalid port: %u - only 9340 is supported on mainnet.", service.GetPort());
                 LogPrintf("CActiveThrone::ManageStatus() - not capable: %s\n", notCapableReason);
@@ -237,6 +243,12 @@ bool CActiveThrone::CreateBroadcast(std::string strService, std::string strKeyTh
 
     CService service = CService(strService);
     if(Params().NetworkID() == CBaseChainParams::MAIN) {
+        if(!(service.IsIPv4() && service.IsRoutable())) {
+             notCapableReason = "Invalid IP address (IPV4 ONLY)" + service.ToString();
+             status = THRONE_NOT_CAPABLE;
+              LogPrintf("CActiveThrone::ManageStatus() - not capable: %s\n", notCapableReason.c_str());
+              return;
+    }
         if(service.GetPort() != 9340) {
             errorMessage = strprintf("Invalid port %u for throne %s - only 9340 is supported on mainnet.", service.GetPort(), strService);
             LogPrintf("CActiveThrone::CreateBroadcast() - %s\n", errorMessage);

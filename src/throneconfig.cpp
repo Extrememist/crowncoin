@@ -54,6 +54,11 @@ bool CThroneConfig::read(std::string& strErr) {
         }
 
         if(Params().NetworkID() == CBaseChainParams::MAIN) {
+            if (!(CService(ip).IsIPv4() && CService(ip).IsRoutable())) {
+                LogPrintf("Invalid Address detected in throne.conf: %s (IPV4 ONLY) \n", line.c_str());
+                streamConfig.close();
+                return false;
+        }
             if(CService(ip).GetPort() != 9340) {
                 strErr = _("Invalid port detected in throne.conf") + "\n" +
                         strprintf(_("Line: %d"), linenumber) + "\n\"" + line + "\"" + "\n" +
