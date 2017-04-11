@@ -36,6 +36,9 @@ private:
     bool GetThroNeVin(CTxIn& vin, CPubKey& pubkey, CKey& secretKey, std::string strTxHash, std::string strOutputIndex);
     bool GetVinFromOutput(COutput out, CTxIn& vin, CPubKey& pubkey, CKey& secretKey);
 
+    // Is ValidNetAddr
+    bool IsValidNetAddr();
+
 public:
 	// Initialized by init.cpp
 	// Keys for the main Throne
@@ -64,8 +67,6 @@ public:
     bool GetThroNeVin(CTxIn& vin, CPubKey& pubkey, CKey& secretKey);
     vector<COutput> SelectCoinsThrone();
 
-    // Is ValidNetAddr
-    bool IsValidNetAddr();
 
     /// Enable cold wallet mode (run a Throne with no funds)
     bool EnableHotColdThroNe(CTxIn& vin, CService& addr);
