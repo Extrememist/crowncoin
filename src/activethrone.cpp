@@ -64,13 +64,13 @@ void CActiveThrone::ManageStatus()
             service = CService(strThroNeAddr);
         }
 
-        if(Params().NetworkID() == CBaseChainParams::MAIN) {
+        if(Params().NetworkID() == CBaseChainParams::MAIN){
             if(!(service.IsIPv4() && service.IsRoutable())) {
                 notCapableReason = "Invalid IP address (IPV4 ONLY)" + service.ToString();
                 LogPrintf("CActiveThrone::ManageStatus() - not capable: %s\n", notCapableReason.c_str());
                 return;
             }
-
+        }
         LogPrintf("CActiveThrone::ManageStatus() - Checking inbound connection to '%s'\n", service.ToString());
 
         CNode *pnode = ConnectNode((CAddress)service, NULL, false);
@@ -414,5 +414,4 @@ bool CActiveThrone::EnableHotColdThroNe(CTxIn& newVin, CService& newService)
     LogPrintf("CActiveThrone::EnableHotColdThroNe() - Enabled! You may shut down the cold daemon.\n");
 
     return true;
-}
 }
