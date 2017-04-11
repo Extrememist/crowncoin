@@ -67,20 +67,10 @@ void CActiveThrone::ManageStatus()
         if(Params().NetworkID() == CBaseChainParams::MAIN) {
             if(!(service.IsIPv4() && service.IsRoutable())) {
                 notCapableReason = "Invalid IP address (IPV4 ONLY)" + service.ToString();
-                status = THRONE_NOT_CAPABLE;
                 LogPrintf("CActiveThrone::ManageStatus() - not capable: %s\n", notCapableReason.c_str());
                 return;
             }
-            if(service.GetPort() != 9340) {
-                notCapableReason = strprintf("Invalid port: %u - only 9340 is supported on mainnet.", service.GetPort());
-                LogPrintf("CActiveThrone::ManageStatus() - not capable: %s\n", notCapableReason);
-                return;
-            }
-        } else if(service.GetPort() == 9340) {
-            notCapableReason = strprintf("Invalid port: %u - 9340 is only supported on mainnet.", service.GetPort());
-            LogPrintf("CActiveThrone::ManageStatus() - not capable: %s\n", notCapableReason);
-            return;
-        }
+nActiveState =
 
         LogPrintf("CActiveThrone::ManageStatus() - Checking inbound connection to '%s'\n", service.ToString());
 
@@ -214,6 +204,15 @@ bool CActiveThrone::SendThronePing(std::string& errorMessage) {
 
 }
 
+bool CThrone::IsValidNetAddr()
+ {
+     // TODO: regtest is fine with any addresses for now,
+     // should probably be a bit smarter if one day we start to implement tests for this
+     return Params().NetworkIDString() == CBaseChainParams::REGTEST ||
+             (addr.IsIPv4() && IsReachable(addr) && addr.IsRoutable());
+ }
+
+
 bool CActiveThrone::CreateBroadcast(std::string strService, std::string strKeyThrone, std::string strTxHash, std::string strOutputIndex, std::string& errorMessage, CThroneBroadcast &mnb, bool fOffline) {
     CTxIn vin;
     CPubKey pubKeyCollateralAddress;
@@ -244,8 +243,7 @@ bool CActiveThrone::CreateBroadcast(std::string strService, std::string strKeyTh
     CService service = CService(strService);
     if(Params().NetworkID() == CBaseChainParams::MAIN) {
         if(!(service.IsIPv4() && service.IsRoutable())) {
-             notCapableReason = "Invalid IP address (IPV4 ONLY)" + service.ToString();
-             status = THRONE_NOT_CAPABLE;
+             errorMessage = strprintf("Invalid IP address (IPV4 ONLY) %s", service.ToString()); ?
               LogPrintf("CActiveThrone::ManageStatus() - not capable: %s\n", notCapableReason.c_str());
               return;
     }

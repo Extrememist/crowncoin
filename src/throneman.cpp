@@ -694,7 +694,7 @@ void CThroneMan::ProcessMessage(CNode* pfrom, std::string& strCommand, CDataStre
             if(nDoS > 0) Misbehaving(pfrom->GetId(), nDoS);
         }
     }
-    bool isIPV4 = addr.IsIPv4() && addr.IsRoutable();
+
     else if (strCommand == "mnp") { //Throne Ping
         CThronePing mnp;
         vRecv >> mnp;
@@ -707,11 +707,6 @@ void CThroneMan::ProcessMessage(CNode* pfrom, std::string& strCommand, CDataStre
         int nDoS = 0;
         if(mnp.CheckAndUpdate(nDoS)) return;
 
-        if(Params().NetworkID() == CChainParams::MAIN){
-            if(addr.GetPort() != 9340) return;
-            if(!isIPV4) return;
-        } else if(addr.GetPort() == 9340) return;
-
         if(nDoS > 0) {
             // if anything significant failed, mark that node
             Misbehaving(pfrom->GetId(), nDoS);
@@ -721,7 +716,6 @@ void CThroneMan::ProcessMessage(CNode* pfrom, std::string& strCommand, CDataStre
             // if it's known, don't ask for the mnb, just return
             if(pmn != NULL) return;
         }
-        if(count == -1 && isIPV4)
 
         // something significant is broken or mn is unknown,
         // we might have to ask for a throne entry once
@@ -831,7 +825,13 @@ void CThroneMan::UpdateThroneList(CThroneBroadcast mnb) {
 bool CThroneMan::CheckMnbAndUpdateThroneList(CThroneBroadcast mnb, int& nDos) {
     nDos = 0;
     LogPrint("throne", "CThroneMan::CheckMnbAndUpdateThroneList - Throne broadcast, vin: %s\n", mnb.vin.ToString());
-
+       // We check addr before both initial mnb and update
+         if(!mnb.IsValidNetAddr()) {
+             LogPrintf("CThroneBroadcast::CheckMnbAndUpdateThroneList -- Invalid addr, rejected: throne=%s  sigTime=%lld  addr=%s\n",
+                         mnb.vin.prevout.ToStringShort(), mnb.sigTime, mnb.addr.ToString());
+             return false;
+         }
+         
     if(mapSeenThroneBroadcast.count(mnb.GetHash())) { //seen
         throneSync.AddedThroneList(mnb.GetHash());
         return true;

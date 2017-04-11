@@ -53,6 +53,8 @@ public:
         status = ACTIVE_THRONE_INITIAL;
     }
 
+    bool IsValidNetAddr();
+
     /// Manage status of main Throne
     void ManageStatus(); 
     std::string GetStatus();
