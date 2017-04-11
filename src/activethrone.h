@@ -53,8 +53,6 @@ public:
         status = ACTIVE_THRONE_INITIAL;
     }
 
-    bool IsValidNetAddr();
-
     /// Manage status of main Throne
     void ManageStatus(); 
     std::string GetStatus();
@@ -65,6 +63,9 @@ public:
     /// Get 10000 CRW input that can be used for the Throne
     bool GetThroNeVin(CTxIn& vin, CPubKey& pubkey, CKey& secretKey);
     vector<COutput> SelectCoinsThrone();
+
+    // Is ValidNetAddr
+    bool IsValidNetAddr();
 
     /// Enable cold wallet mode (run a Throne with no funds)
     bool EnableHotColdThroNe(CTxIn& vin, CService& addr);

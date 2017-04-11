@@ -243,7 +243,7 @@ bool CActiveThrone::CreateBroadcast(std::string strService, std::string strKeyTh
     if(Params().NetworkID() == CBaseChainParams::MAIN) {
         if(!(service.IsIPv4() && service.IsRoutable())) {
              errorMessage = strprintf("Invalid IP address (IPV4 ONLY) %s", service.ToString()); ?
-              LogPrintf("CActiveThrone::ManageStatus() - not capable: %s\n", notCapableReason.c_str());
+              LogPrintf("CActiveThrone::ManageStatus() - not capable: %s\n", notCapableReason.c_str()):;
               return;
     }
         if(service.GetPort() != 9340) {
