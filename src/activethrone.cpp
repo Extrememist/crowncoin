@@ -70,7 +70,6 @@ void CActiveThrone::ManageStatus()
                 LogPrintf("CActiveThrone::ManageStatus() - not capable: %s\n", notCapableReason.c_str());
                 return;
             }
-nActiveState =
 
         LogPrintf("CActiveThrone::ManageStatus() - Checking inbound connection to '%s'\n", service.ToString());
 
@@ -415,4 +414,5 @@ bool CActiveThrone::EnableHotColdThroNe(CTxIn& newVin, CService& newService)
     LogPrintf("CActiveThrone::EnableHotColdThroNe() - Enabled! You may shut down the cold daemon.\n");
 
     return true;
+}
 }

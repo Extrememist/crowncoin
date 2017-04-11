@@ -831,7 +831,7 @@ bool CThroneMan::CheckMnbAndUpdateThroneList(CThroneBroadcast mnb, int& nDos) {
                          mnb.vin.prevout.ToStringShort(), mnb.sigTime, mnb.addr.ToString());
              return false;
          }
-         
+
     if(mapSeenThroneBroadcast.count(mnb.GetHash())) { //seen
         throneSync.AddedThroneList(mnb.GetHash());
         return true;
