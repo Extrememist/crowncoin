@@ -71,6 +71,16 @@ void CActiveThrone::ManageStatus()
                 return;
             }
         }
+        if(service.GetPort() != 9340) {
+               notCapableReason = strprintf("Invalid port: %u - only 9340 is supported on mainnet.", service.GetPort());
+               LogPrintf("CActiveThrone::ManageStatus() - not capable: %s\n", notCapableReason);
+               return;
+                        }
+        } else if(service.GetPort() == 9340) {
+               notCapableReason = strprintf("Invalid port: %u - 9340 is only supported on mainnet.", service.GetPort());
+               LogPrintf("CActiveThrone::ManageStatus() - not capable: %s\n", notCapableReason);
+               return;
+        }
         LogPrintf("CActiveThrone::ManageStatus() - Checking inbound connection to '%s'\n", service.ToString());
 
         CNode *pnode = ConnectNode((CAddress)service, NULL, false);
