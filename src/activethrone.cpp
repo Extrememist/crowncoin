@@ -203,14 +203,6 @@ bool CActiveThrone::SendThronePing(std::string& errorMessage) {
 
 }
 
-bool CThrone::IsValidNetAddr()
- {
-     // TODO: regtest is fine with any addresses for now,
-     // should probably be a bit smarter if one day we start to implement tests for this
-     return Params().NetworkIDString() == CBaseChainParams::REGTEST ||
-             (addr.IsIPv4() && IsReachable(addr) && addr.IsRoutable());
- }
-
 
 bool CActiveThrone::CreateBroadcast(std::string strService, std::string strKeyThrone, std::string strTxHash, std::string strOutputIndex, std::string& errorMessage, CThroneBroadcast &mnb, bool fOffline) {
     CTxIn vin;

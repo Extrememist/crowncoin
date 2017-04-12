@@ -36,9 +36,6 @@ private:
     bool GetThroNeVin(CTxIn& vin, CPubKey& pubkey, CKey& secretKey, std::string strTxHash, std::string strOutputIndex);
     bool GetVinFromOutput(COutput out, CTxIn& vin, CPubKey& pubkey, CKey& secretKey);
 
-    // Is ValidNetAddr
-    bool IsValidNetAddr();
-
 public:
 	// Initialized by init.cpp
 	// Keys for the main Throne
