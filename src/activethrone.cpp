@@ -246,7 +246,7 @@ bool CActiveThrone::CreateBroadcast(std::string strService, std::string strKeyTh
         if(!(service.IsIPv4() && service.IsRoutable())) {
              errorMessage = strprintf("Invalid IP address (IPV4 ONLY) %s", service.ToString());
               LogPrintf("CActiveThrone::ManageStatus() - not capable: %s\n", notCapableReason.c_str());
-              return;
+              return false;
     }
         if(service.GetPort() != 9340) {
             errorMessage = strprintf("Invalid port %u for throne %s - only 9340 is supported on mainnet.", service.GetPort(), strService);
