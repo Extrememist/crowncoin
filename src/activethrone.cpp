@@ -144,7 +144,7 @@ void CActiveThrone::ManageStatus()
     if(!SendThronePing(errorMessage)) {
         LogPrintf("CActiveThrone::ManageStatus() - Error on Ping: %s\n", errorMessage);
     }
-
+ }
 
 std::string CActiveThrone::GetStatus() {
     switch (status) {
@@ -244,7 +244,7 @@ bool CActiveThrone::CreateBroadcast(std::string strService, std::string strKeyTh
     CService service = CService(strService);
     if(Params().NetworkID() == CBaseChainParams::MAIN) {
         if(!(service.IsIPv4() && service.IsRoutable())) {
-             errorMessage = strprintf("Invalid IP address (IPV4 ONLY) %s", service.ToString()); 
+             errorMessage = strprintf("Invalid IP address (IPV4 ONLY) %s", service.ToString());
               LogPrintf("CActiveThrone::ManageStatus() - not capable: %s\n", notCapableReason.c_str());
               return;
     }
