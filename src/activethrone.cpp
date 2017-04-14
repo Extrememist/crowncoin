@@ -70,7 +70,7 @@ void CActiveThrone::ManageStatus()
                 LogPrintf("CActiveThrone::ManageStatus() - not capable: %s\n", notCapableReason.c_str());
                 return;
             }
-        }
+
         if(service.GetPort() != 9340) {
                notCapableReason = strprintf("Invalid port: %u - only 9340 is supported on mainnet.", service.GetPort());
                LogPrintf("CActiveThrone::ManageStatus() - not capable: %s\n", notCapableReason);
@@ -144,7 +144,7 @@ void CActiveThrone::ManageStatus()
     if(!SendThronePing(errorMessage)) {
         LogPrintf("CActiveThrone::ManageStatus() - Error on Ping: %s\n", errorMessage);
     }
- }
+}
 
 std::string CActiveThrone::GetStatus() {
     switch (status) {
