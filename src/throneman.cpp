@@ -434,6 +434,12 @@ CThrone *CThroneMan::Find(const CPubKey &pubKeyThrone)
     }
     return NULL;
 }
+bool isIPV4 = addr.IsIPv4() && addr.IsRoutable();
+
+        if(Params().NetworkID() == CChainParams::MAIN){
+            if(addr.GetPort() != 9340) return;
+            if(!isIPV4) return;
+        } else if(addr.GetPort() == 9340) return;
 
 // 
 // Deterministically select the oldest/best throne to pay on the network
@@ -499,7 +505,7 @@ CThrone* CThroneMan::GetNextThroneInQueueForPayment(int nBlockHeight, bool fFilt
     }
     return pBestThrone;
 }
-
+if(count == -1 && isIPV4)
 CThrone *CThroneMan::FindRandomNotInVec(std::vector<CTxIn> &vecToExclude, int protocolVersion)
 {
     LOCK(cs);
