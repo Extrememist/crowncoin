@@ -5,7 +5,7 @@
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
 #include "chainparams.h"
-
+#include <stdio.h>
 #include "random.h"
 #include "util.h"
 #include "utilstrencodings.h"
@@ -234,7 +234,7 @@ public:
 
 	if (true && genesis.GetHash() != hashGenesisBlock)
                        {
-                           print("Searching for genesis block...\n");
+                           printf("Searching for genesis block...\n");
                            uint256 hashTarget = uint256().SetCompact(genesis.nBits);
                            uint256 thash;
                            while (true)
@@ -244,20 +244,20 @@ public:
                                  break;
                                if ((genesis.nNonce & 0xFFF) == 0)
                                {
-                                   print("nonce %08X: hash = %s (target = %s)\n", genesis.nNonce, thash.ToString().c_str(), hashTarget.ToString().c_str());
+                                   printf("nonce %08X: hash = %s (target = %s)\n", genesis.nNonce, thash.ToString().c_str(), hashTarget.ToString().c_str());
                                }
                                ++genesis.nNonce;
                                if (genesis.nNonce == 0)
                                {
-                                   print("NONCE WRAPPED, incrementing time\n");
+                                   printf("NONCE WRAPPED, incrementing time\n");
                                    ++genesis.nTime;
                                }
                            }
-                           print("genesis.nTime = %u \n", genesis.nTime);
-                           print("genesis.nNonce = %u \n", genesis.nNonce);
-                           print("genesis.nVersion = %u \n", genesis.nVersion);
-                           print("genesis.GetHash = %s\n", genesis.GetHash().ToString().c_str()); //first this, then comment this line out and uncomment the one under.
-                           //print("genesis.hashMerkleRoot = %s \n", genesis.hashMerkleRoot.ToString().c_str()); //improvised. worked for me, to find merkle root/
+                           printf("genesis.nTime = %u \n", genesis.nTime);
+                           printf("genesis.nNonce = %u \n", genesis.nNonce);
+                           printf("genesis.nVersion = %u \n", genesis.nVersion);
+                           printf("genesis.GetHash = %s\n", genesis.GetHash().ToString().c_str()); //first this, then comment this line out and uncomment the one under.
+                           //printf("genesis.hashMerkleRoot = %s \n", genesis.hashMerkleRoot.ToString().c_str()); //improvised. worked for me, to find merkle root/
                        }
 
         hashGenesisBlock = genesis.GetHash();
