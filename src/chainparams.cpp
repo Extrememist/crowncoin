@@ -258,7 +258,7 @@ public:
                            printf("genesis.nVersion = %u \n", genesis.nVersion);
                            //printf("genesis.GetHash = %s\n", genesis.GetHash().ToString().c_str()); //first this, then comment this line out and uncomment the one under.
                            printf("genesis.hashMerkleRoot = %s \n", genesis.hashMerkleRoot.ToString().c_str()); //improvised. worked for me, to find merkle root/
-                       }*/
+                       }
 
         hashGenesisBlock = genesis.GetHash();
         assert(hashGenesisBlock == uint256S("0x000000004daeaebf6182d09b7b40b81bc72caab1a13c79cef2669b0b5686b7b8"));
