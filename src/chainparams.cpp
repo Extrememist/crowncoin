@@ -5,7 +5,7 @@
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
 #include "chainparams.h"
-#include <stdio.h>
+
 #include "random.h"
 #include "util.h"
 #include "utilstrencodings.h"
@@ -229,10 +229,10 @@ public:
         nMaxTipAge = 0x7fffffff;
 
         //! Modify the testnet genesis block so the timestamp is valid for a later start.
-        genesis.nTime = 1493809693;
-        genesis.nNonce = 2574547475;
+        genesis.nTime = 1493813831;
+        genesis.nNonce = 768389926;
 
-	if (true && genesis.GetHash() != hashGenesisBlock)
+	/*if (true && genesis.GetHash() != hashGenesisBlock)
                        {
                            printf("Searching for genesis block...\n");
                            uint256 hashTarget = uint256().SetCompact(genesis.nBits);
@@ -256,13 +256,13 @@ public:
                            printf("genesis.nTime = %u \n", genesis.nTime);
                            printf("genesis.nNonce = %u \n", genesis.nNonce);
                            printf("genesis.nVersion = %u \n", genesis.nVersion);
-                           printf("genesis.GetHash = %s\n", genesis.GetHash().ToString().c_str()); //first this, then comment this line out and uncomment the one under.
-                           //printf("genesis.hashMerkleRoot = %s \n", genesis.hashMerkleRoot.ToString().c_str()); //improvised. worked for me, to find merkle root/
-                       }
+                           //printf("genesis.GetHash = %s\n", genesis.GetHash().ToString().c_str()); //first this, then comment this line out and uncomment the one under.
+                           printf("genesis.hashMerkleRoot = %s \n", genesis.hashMerkleRoot.ToString().c_str()); //improvised. worked for me, to find merkle root/
+                       }*/
 
         hashGenesisBlock = genesis.GetHash();
-        assert(hashGenesisBlock == uint256S("0x000000004daeaebf6182d09b7b40b81bc72caab1a13c79cef2669b0b5686b7b8"));
-        assert(genesis.hashMerkleRoot == uint256S("0x80ad356118a9ab8db192db66ef77146cc36d958f959251feace550e4ca3d1446"));
+        assert(hashGenesisBlock == uint256S("00000000e3088e09de193108b8d544cee642fd9d9f0d003651702caa6905c27d"));
+        assert(genesis.hashMerkleRoot == uint256S("0x7422082434ada36af2aecd2f0330927d68c1196976bf4404c9b2c4e8b682e511"));
 
         vFixedSeeds.clear();
         vSeeds.clear();
