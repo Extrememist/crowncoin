@@ -79,7 +79,7 @@ static const Checkpoints::CCheckpointData data = {
 
 static Checkpoints::MapCheckpoints mapCheckpointsTestnet =
         boost::assign::map_list_of
-        ( 0, uint256S("0x00000000e3088e09de193108b8d544cee642fd9d9f0d003651702caa6905c27d"))
+        ( 0, uint256S("0x0000000018d2cdbeff14e49db850c24f31c052f6f56ffb73dc1210cd90dc88fb"))
         ;
 static const Checkpoints::CCheckpointData dataTestnet = {
         &mapCheckpointsTestnet,
@@ -137,7 +137,7 @@ public:
          *     CTxOut(nValue=50.00000000, scriptPubKey=0xA9037BAC7050C479B121CF)
          *   vMerkleTree: e0028e
          */
-        const char* pszTimestamp = "The inception of Crowncoin 10/Oct/2014";
+        const char* psz`Timestamp` = "The inception of Crowncoin 10/Oct/2014";
         CMutableTransaction txNew;
         txNew.vin.resize(1);
         txNew.vout.resize(1);
@@ -229,8 +229,8 @@ public:
         nMaxTipAge = 0x7fffffff;
 
         //! Modify the testnet genesis block so the timestamp is valid for a later start.
-        genesis.nTime = 1493813831;
-        genesis.nNonce = 768389926;
+        genesis.nTime = 1493884457;
+        genesis.nNonce = 236046727;
 
 	/*if (true && genesis.GetHash() != hashGenesisBlock)
                        {
@@ -261,8 +261,8 @@ public:
                        }*/
 
         hashGenesisBlock = genesis.GetHash();
-        assert(hashGenesisBlock == uint256S("0x00000000e3088e09de193108b8d544cee642fd9d9f0d003651702caa6905c27d"));
-        assert(genesis.hashMerkleRoot == uint256S("0x80ad356118a9ab8db192db66ef77146cc36d958f959251feace550e4ca3d1446"));
+        assert(hashGenesisBlock == uint256S("0x0000000018d2cdbeff14e49db850c24f31c052f6f56ffb73dc1210cd90dc88fb"));
+        assert(genesis.hashMerkleRoot == uint256S("0xbc8ea1a553b4202a51b02f82e24c061c03a4841bb89a183551b1549d9ff0cf17"));
 
         vFixedSeeds.clear();
         vSeeds.clear();
