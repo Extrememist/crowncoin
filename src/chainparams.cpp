@@ -229,8 +229,8 @@ public:
         nMaxTipAge = 0x7fffffff;
 
         //! Modify the testnet genesis block so the timestamp is valid for a later start.
-        genesis.nTime = 1493884457;
-        genesis.nNonce = 236046727;
+        genesis.nTime = 1494339233;
+        genesis.nNonce = 14454193;
 
 	/*if (true && genesis.GetHash() != hashGenesisBlock)
                        {
